@@ -3,6 +3,9 @@
 
 #include <QtGlobal>
 
+/* Use Feedback Ctrl REV1 board */
+#define USE_FDBKCTRL
+
 /* Empty message ID.                       */
 #define TELEMETRY_MSG_NOMSG             0x00
 /* Telemetry message header size in bytes. */
@@ -17,9 +20,17 @@
 #define TELEMETRY_MSG_DATA_SIZE_ID      0x02
 
 /* Number of samples in streaming buffer.  */
-#define STREAMING_BUF_DEPTH             512
+#if defined(USE_FDBKCTRL)
+  #define STREAMING_BUF_DEPTH           64
+#else // !USE_FDBKCTRL
+  #define STREAMING_BUF_DEPTH           512
+#endif // USE_FDBKCTRL
 /* Averaging coefficient.                  */
-#define AVG_COUNTER_MAX                 16
+#if defined(USE_FDBKCTRL)
+  #define AVG_COUNTER_MAX               4
+#else // !USE_FDBKCTRL
+  #define AVG_COUNTER_MAX               16
+#endif // USE_FDBKCTRL
 /* Number of samples in plotting buffer.   */
 #define PLOTTING_BUF_DEPTH              (STREAMING_BUF_DEPTH / AVG_COUNTER_MAX)
 
